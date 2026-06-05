@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.Color;
 
 public class Tela extends JFrame {
 
@@ -22,7 +24,11 @@ public class Tela extends JFrame {
 	private JTextField tfCursoCodigo;
 	private JTextField tfCursoNome;
 	private JTextField tfCursoArea;
-
+	private JTextField tfProfessorCpf;
+	private JTextField tfProfessorNome;
+	private JTextField tfProfessorQntPontos;
+	private JTextField tfProcessoCodigo;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,19 +45,20 @@ public class Tela extends JFrame {
 	public Tela() {
 		setTitle("Contratação de Docentes");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 640, 480);
+		setBounds(100, 100, 640, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 604, 419);
+		tabbedPane.setBounds(10, 11, 604, 459);
 		contentPane.add(tabbedPane);
 		
 		//------------------------------------------ Tab Disciplina -------------------------------------------------------
 		
 		JPanel tabDisciplina = new JPanel();
+		tabDisciplina.setBackground(new Color(255, 255, 255));
 		tabbedPane.addTab("Disciplina", null, tabDisciplina, "Cadastro de Disciplinas disponíveis");
 		tabDisciplina.setLayout(null);
 		
@@ -73,6 +80,8 @@ public class Tela extends JFrame {
 		tabDisciplina.add(lblDisciplinaCodigoCurso);
 		
 		JComboBox<String> cboxDisciplinaCodigo = new JComboBox<>();
+		cboxDisciplinaCodigo.setToolTipText("Selecione o Código do Curso desejado");
+		cboxDisciplinaCodigo.setSelectedIndex(-1);
 		cboxDisciplinaCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		cboxDisciplinaCodigo.setBounds(500, 40, 90, 25);
 		tabDisciplina.add(cboxDisciplinaCodigo);
@@ -96,6 +105,7 @@ public class Tela extends JFrame {
 		
 		String[] dias = {"Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"};
 		JComboBox<String> cboxDisciplinaDiaSemana = new JComboBox<>(dias);
+		cboxDisciplinaDiaSemana.setToolTipText("Selecione o dia da Semana de aplicação da Disciplina");
 		cboxDisciplinaDiaSemana.setSelectedIndex(-1);
 		cboxDisciplinaDiaSemana.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		cboxDisciplinaDiaSemana.setBounds(480, 100, 110, 25);
@@ -125,6 +135,27 @@ public class Tela extends JFrame {
 		tabDisciplina.add(tfDisciplinaQntHoras);
 		tfDisciplinaQntHoras.setColumns(10);
 		
+		JButton btnDisciplinaSalvar = new JButton("Salvar");
+		btnDisciplinaSalvar.setToolTipText("Criar ou Alterar uma Disciplina");
+		btnDisciplinaSalvar.setForeground(new Color(0, 128, 0));
+		btnDisciplinaSalvar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnDisciplinaSalvar.setBounds(40, 220, 90, 25);
+		tabDisciplina.add(btnDisciplinaSalvar);
+		
+		JButton btnDisciplinaBuscar = new JButton("Buscar");
+		btnDisciplinaBuscar.setToolTipText("Buscar Disciplina");
+		btnDisciplinaBuscar.setForeground(new Color(0, 0, 0));
+		btnDisciplinaBuscar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnDisciplinaBuscar.setBounds(255, 220, 90, 25);
+		tabDisciplina.add(btnDisciplinaBuscar);
+		
+		JButton btnDisciplinaRemover = new JButton("Remover");
+		btnDisciplinaRemover.setToolTipText("Remover Disciplina do Cadastro");
+		btnDisciplinaRemover.setForeground(new Color(255, 0, 0));
+		btnDisciplinaRemover.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnDisciplinaRemover.setBounds(469, 220, 90, 25);
+		tabDisciplina.add(btnDisciplinaRemover);
+		
 		//------------------------------------------ Tab Curso ------------------------------------------------------------
 		
 		JPanel tabCurso = new JPanel();
@@ -151,7 +182,7 @@ public class Tela extends JFrame {
 		tfCursoNome = new JTextField();
 		tfCursoNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tfCursoNome.setToolTipText("Digite o Nome do Curso");
-		tfCursoNome.setBounds(110, 100, 160, 25);
+		tfCursoNome.setBounds(110, 100, 450, 25);
 		tabCurso.add(tfCursoNome);
 		tfCursoNome.setColumns(10);
 		
@@ -163,9 +194,30 @@ public class Tela extends JFrame {
 		tfCursoArea = new JTextField();
 		tfCursoArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tfCursoArea.setToolTipText("Digite o Área do Curso");
-		tfCursoArea.setBounds(110, 160, 160, 25);
+		tfCursoArea.setBounds(110, 160, 450, 25);
 		tabCurso.add(tfCursoArea);
 		tfCursoArea.setColumns(10);
+		
+		JButton btnCursoSalvar = new JButton("Salvar");
+		btnCursoSalvar.setToolTipText("Adicionar ou Alterar os dados de um Curso");
+		btnCursoSalvar.setForeground(new Color(0, 128, 0));
+		btnCursoSalvar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCursoSalvar.setBounds(40, 220, 90, 25);
+		tabCurso.add(btnCursoSalvar);
+		
+		JButton btnCursoBuscar = new JButton("Buscar");
+		btnCursoBuscar.setToolTipText("Buscar Curso");
+		btnCursoBuscar.setForeground(new Color(0, 0, 0));
+		btnCursoBuscar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCursoBuscar.setBounds(255, 220, 90, 25);
+		tabCurso.add(btnCursoBuscar);
+		
+		JButton btnCursoRemover = new JButton("Remover");
+		btnCursoRemover.setToolTipText("Remover Curso do Cadastro");
+		btnCursoRemover.setForeground(new Color(255, 0, 0));
+		btnCursoRemover.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCursoRemover.setBounds(469, 220, 90, 25);
+		tabCurso.add(btnCursoRemover);
 		
 		//------------------------------------------ Tab Professor -------------------------------------------------------
 		
@@ -178,20 +230,70 @@ public class Tela extends JFrame {
 		lblProfessorCpf.setBounds(40, 40, 160, 25);
 		tabProfessor.add(lblProfessorCpf);
 		
+		tfProfessorCpf = new JTextField();
+		tfProfessorCpf.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfProfessorCpf.setToolTipText("Digite o CPF do Docente");
+		tfProfessorCpf.setBounds(190, 40, 160, 25);
+		tabProfessor.add(tfProfessorCpf);
+		tfProfessorCpf.setColumns(10);
+		
 		JLabel lblProfessorNome = new JLabel("Nome do Docente:");
 		lblProfessorNome.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProfessorNome.setBounds(40, 100, 160, 25);
 		tabProfessor.add(lblProfessorNome);
+		
+		tfProfessorNome = new JTextField();
+		tfProfessorNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfProfessorNome.setToolTipText("Digite o Nome do Docente");
+		tfProfessorNome.setBounds(190, 100, 379, 25);
+		tabProfessor.add(tfProfessorNome);
+		tfProfessorNome.setColumns(10);
 		
 		JLabel lblProfessorArea = new JLabel("Área de Atuação:");
 		lblProfessorArea.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProfessorArea.setBounds(40, 160, 160, 25);
 		tabProfessor.add(lblProfessorArea);
 		
+		JComboBox<String> cboxProfessorArea = new JComboBox<>(dias);
+		cboxProfessorArea.setToolTipText("O Docente só pode ser cadastrado se sua área for compatível com algum curso da unidade");
+		cboxProfessorArea.setSelectedIndex(-1);
+		cboxProfessorArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxProfessorArea.setBounds(190, 160, 160, 25);
+		tabProfessor.add(cboxProfessorArea);
+		
 		JLabel lblProfessorQntPontos = new JLabel("Quantidade de Pontos:");
 		lblProfessorQntPontos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProfessorQntPontos.setBounds(360, 160, 160, 25);
 		tabProfessor.add(lblProfessorQntPontos);
+		
+		tfProfessorQntPontos = new JTextField();
+		tfProfessorQntPontos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfProfessorQntPontos.setToolTipText("Digite a quantidade de pontos do Docente");
+		tfProfessorQntPontos.setBounds(530, 160, 40, 25);
+		tabProfessor.add(tfProfessorQntPontos);
+		tfProfessorQntPontos.setColumns(10);
+		
+		
+		JButton btnProfessorSalvar = new JButton("Salvar");
+		btnProfessorSalvar.setToolTipText("Adicionar ou Alterar os dados de um Docente");
+		btnProfessorSalvar.setForeground(new Color(0, 128, 0));
+		btnProfessorSalvar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnProfessorSalvar.setBounds(40, 220, 90, 25);
+		tabProfessor.add(btnProfessorSalvar);
+		
+		JButton btnProfessorBuscar = new JButton("Buscar");
+		btnProfessorBuscar.setToolTipText("Buscar Docente");
+		btnProfessorBuscar.setForeground(new Color(0, 0, 0));
+		btnProfessorBuscar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnProfessorBuscar.setBounds(255, 220, 90, 25);
+		tabProfessor.add(btnProfessorBuscar);
+		
+		JButton btnProfessorRemover = new JButton("Remover");
+		btnProfessorRemover.setToolTipText("Remover Docente do Cadastro");
+		btnProfessorRemover.setForeground(new Color(255, 0, 0));
+		btnProfessorRemover.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnProfessorRemover.setBounds(469, 220, 90, 25);
+		tabProfessor.add(btnProfessorRemover);
 		
 		//------------------------------------------ Tab Inscrições ------------------------------------------------------
 		
@@ -204,15 +306,57 @@ public class Tela extends JFrame {
 		lblIncriçõesCpf.setBounds(40, 40, 160, 25);
 		tabInscrições.add(lblIncriçõesCpf);
 		
-		JLabel lblIncriçõesCodigo = new JLabel("Código da Disciplina:");
-		lblIncriçõesCodigo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblIncriçõesCodigo.setBounds(40, 100, 160, 25);
-		tabInscrições.add(lblIncriçõesCodigo);
+		JComboBox<String> cboxIncriçõesCpf = new JComboBox<>(dias);
+		cboxIncriçõesCpf.setToolTipText("Selecione o CPF do Docente");
+		cboxIncriçõesCpf.setSelectedIndex(-1);
+		cboxIncriçõesCpf.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxIncriçõesCpf.setBounds(210, 40, 250, 25);
+		tabInscrições.add(cboxIncriçõesCpf);
 		
 		JLabel lblInscriçõesProcesso = new JLabel("Código do Processo:");
 		lblInscriçõesProcesso.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblInscriçõesProcesso.setBounds(40, 160, 160, 25);
+		lblInscriçõesProcesso.setBounds(40, 100, 160, 25);
 		tabInscrições.add(lblInscriçõesProcesso);
+		
+		JComboBox<String> cboxIncriçõesCodigoProcesso = new JComboBox<>(dias);
+		cboxIncriçõesCodigoProcesso.setToolTipText("Selecione o Código do Processo Aberto");
+		cboxIncriçõesCodigoProcesso.setSelectedIndex(-1);
+		cboxIncriçõesCodigoProcesso.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxIncriçõesCodigoProcesso.setBounds(210, 100, 250, 25);
+		tabInscrições.add(cboxIncriçõesCodigoProcesso);
+		
+		JLabel lblIncriçõesCodigo = new JLabel("Código da Disciplina:");
+		lblIncriçõesCodigo.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblIncriçõesCodigo.setBounds(40, 160, 160, 25);
+		tabInscrições.add(lblIncriçõesCodigo);
+		
+		JComboBox<String> cboxIncriçõesCodigoDisciplina = new JComboBox<>(dias);
+		cboxIncriçõesCodigoDisciplina.setToolTipText("Selecione o Código da Disciplina");
+		cboxIncriçõesCodigoDisciplina.setSelectedIndex(-1);
+		cboxIncriçõesCodigoDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxIncriçõesCodigoDisciplina.setBounds(210, 160, 250, 25);
+		tabInscrições.add(cboxIncriçõesCodigoDisciplina);
+		
+		JButton btnIncriçõesSalvar = new JButton("Salvar");
+		btnIncriçõesSalvar.setToolTipText("Adicionar ou Alterar os dados de uma Inscrição");
+		btnIncriçõesSalvar.setForeground(new Color(0, 128, 0));
+		btnIncriçõesSalvar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnIncriçõesSalvar.setBounds(40, 220, 90, 25);
+		tabInscrições.add(btnIncriçõesSalvar);
+		
+		JButton btnIncriçõesBuscar = new JButton("Buscar");
+		btnIncriçõesBuscar.setToolTipText("Buscar Inscrição");
+		btnIncriçõesBuscar.setForeground(new Color(0, 0, 0));
+		btnIncriçõesBuscar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnIncriçõesBuscar.setBounds(255, 220, 90, 25);
+		tabInscrições.add(btnIncriçõesBuscar);
+		
+		JButton btnIncriçõesRemover = new JButton("Remover");
+		btnIncriçõesRemover.setToolTipText("Remover Inscrição do Cadastro");
+		btnIncriçõesRemover.setForeground(new Color(255, 0, 0));
+		btnIncriçõesRemover.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnIncriçõesRemover.setBounds(469, 220, 90, 25);
+		tabInscrições.add(btnIncriçõesRemover);
 		
 		//------------------------------------------ Tab Consulta --------------------------------------------------------
 		
@@ -225,10 +369,89 @@ public class Tela extends JFrame {
 		lblConsultaInscritos.setBounds(40, 40, 160, 25);
 		tabConsulta.add(lblConsultaInscritos);
 		
+		JComboBox<String> cboxConsultaInscritos = new JComboBox<>(dias);
+		cboxConsultaInscritos.setToolTipText("Selecione a Disciplina que deseja Consultar");
+		cboxConsultaInscritos.setSelectedIndex(-1);
+		cboxConsultaInscritos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxConsultaInscritos.setBounds(210, 40, 250, 25);
+		tabConsulta.add(cboxConsultaInscritos);
+		
+		JButton btnConsultaBuscarInscritos = new JButton("Buscar");
+		btnConsultaBuscarInscritos.setToolTipText("Buscar Inscrição");
+		btnConsultaBuscarInscritos.setForeground(new Color(0, 0, 0));
+		btnConsultaBuscarInscritos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnConsultaBuscarInscritos.setBounds(469, 40, 90, 25);
+		tabConsulta.add(btnConsultaBuscarInscritos);
+		
+		
 		JLabel lblConsultaProcessosAbertos = new JLabel("Processos Abertos:");
 		lblConsultaProcessosAbertos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblConsultaProcessosAbertos.setBounds(40, 100, 160, 25);
 		tabConsulta.add(lblConsultaProcessosAbertos);
-
-	}
-}
+		
+		JButton btnConsultaBuscarProcessos = new JButton("Buscar");            
+		btnConsultaBuscarProcessos.setToolTipText("Buscar Disciplinas com Processos Abertos");         
+		btnConsultaBuscarProcessos.setForeground(new Color(0, 0, 0));          
+		btnConsultaBuscarProcessos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnConsultaBuscarProcessos.setBounds(469, 100, 90, 25);                 
+		tabConsulta.add(btnConsultaBuscarProcessos);      
+		
+		//------------------------------------------ Tab Processo --------------------------------------------------------
+		
+		JPanel tabProcesso = new JPanel();
+		tabbedPane.addTab("Processo", null, tabProcesso, "Tela para atualizar um processo");
+		tabProcesso.setLayout(null);
+		
+		JLabel lblProcessoCodigo = new JLabel("Código do Processo:");
+		lblProcessoCodigo.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblProcessoCodigo.setBounds(40, 40, 160, 25);
+		tabProcesso.add(lblProcessoCodigo);
+		
+		tfProcessoCodigo = new JTextField();
+		tfProcessoCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfProcessoCodigo.setToolTipText("Digite o Código do Processo");
+		tfProcessoCodigo.setBounds(210, 40, 160, 25);
+		tabProcesso.add(tfProcessoCodigo);
+		tfProcessoCodigo.setColumns(10);
+		
+		JLabel lblProcessoStatus = new JLabel("Status:");
+		lblProcessoStatus.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblProcessoStatus.setBounds(380, 40, 90, 25);
+		tabProcesso.add(lblProcessoStatus);
+		
+		String[] status = {"Aberto","Inscrições Encerradas","Encerrado"};
+		JComboBox<String> cboxProcessoStatus = new JComboBox<>(status);
+		cboxProcessoStatus.setToolTipText("Selecione o Status do Processo");
+		cboxProcessoStatus.setSelectedIndex(-1);
+		cboxProcessoStatus.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxProcessoStatus.setBounds(450, 40, 110, 25);
+		tabProcesso.add(cboxProcessoStatus);
+		
+		JLabel lblProcessoDisciplina = new JLabel("Disciplina:");
+		lblProcessoDisciplina.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblProcessoDisciplina.setBounds(40, 100, 90, 25);
+		tabProcesso.add(lblProcessoDisciplina);
+		
+		JComboBox<String> cboxDisciplina = new JComboBox<>(status);
+		cboxDisciplina.setToolTipText("Selecione as Disciplinas que irão fazer parte do processo");
+		cboxDisciplina.setSelectedIndex(-1);
+		cboxDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxDisciplina.setBounds(140, 100, 420, 25);
+		tabProcesso.add(cboxDisciplina);
+		
+		JButton btnProcessoSalvar = new JButton("Salvar");
+		btnProcessoSalvar.setToolTipText("Adicionar ou Alterar os dados de um Processo");
+		btnProcessoSalvar.setForeground(new Color(0, 128, 0));
+		btnProcessoSalvar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnProcessoSalvar.setBounds(105, 160, 90, 25);
+		tabProcesso.add(btnProcessoSalvar);
+		
+		JButton btnProcessoBuscar = new JButton("Buscar");
+		btnProcessoBuscar.setToolTipText("Buscar Processo");
+		btnProcessoBuscar.setForeground(new Color(0, 0, 0));
+		btnProcessoBuscar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnProcessoBuscar.setBounds(404, 160, 90, 25);
+		tabProcesso.add(btnProcessoBuscar);
+		
+	}   
+}          
