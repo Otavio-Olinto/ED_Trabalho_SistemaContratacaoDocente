@@ -15,341 +15,350 @@ import javax.swing.JTextField;
 import otavioolinto.Lista;
 
 public class cursoController implements ActionListener {
-	
+
 	private Lista<Curso> listaCursos = new Lista<>(Curso.class);
-	
+
 	private JTextField tfCursoCodigo;
 	private JTextField tfCursoNome;
 	private JTextField tfCursoArea;
 	private JTextArea taCurso;
 
-	public cursoController(JTextField tfCursoCodigo, JTextField tfCursoNome, JTextField tfCursoArea, JTextArea taCurso) {
-		
+	public cursoController(JTextField tfCursoCodigo, JTextField tfCursoNome, JTextField tfCursoArea,
+			JTextArea taCurso) {
+
 		super();
-		
+
 		this.tfCursoCodigo = tfCursoCodigo;
 		this.tfCursoNome = tfCursoNome;
 		this.tfCursoArea = tfCursoArea;
 		this.taCurso = taCurso;
-		
-		   try {
-			   
-		        carregarCursos();
-		        
-		    } catch (Exception e) {
-		    	
-		        e.printStackTrace();
-		    }
-		   
+
+		try {
+
+			carregarCursos();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
 	}
 
 	// Carrega os cursos do csv
-	
-	private void carregarCursos() throws Exception{
-		
-		 String path = System.getProperty("user.home") + File.separator + "SistemaCadastro";
-		 
-		    File arq = new File(path, "Cursos.csv");
 
-		    if (arq.exists() && arq.isFile()) {
+	private void carregarCursos() throws Exception {
 
-		        FileInputStream fis = new FileInputStream(arq);
-		        InputStreamReader isr = new InputStreamReader(fis);
-		        BufferedReader buffer = new BufferedReader(isr);
+		String path = System.getProperty("user.home") + File.separator + "SistemaCadastro";
 
-		        String linha = buffer.readLine();
+		File arq = new File(path, "Cursos.csv");
 
-		        while (linha != null) {
+		if (arq.exists() && arq.isFile()) {
 
-		            String[] dados = linha.split(";");
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader buffer = new BufferedReader(isr);
 
-		            Curso curso = new Curso();
+			String linha = buffer.readLine();
 
-		            curso.codigo = Integer.parseInt(dados[0]);
-		            
-		            curso.nome = dados[1];
-		            
-		            curso.area = dados[2];
+			while (linha != null) {
 
-		            listaCursos.addLast(curso);
+				String[] dados = linha.split(";");
 
-		            linha = buffer.readLine();
-		            
-		        }
+				Curso curso = new Curso();
 
-		        buffer.close();
-		        isr.close();
-		        fis.close();
-		        
-		    }
-		
+				curso.codigo = Integer.parseInt(dados[0]);
+
+				curso.nome = dados[1];
+
+				curso.area = dados[2];
+
+				listaCursos.addLast(curso);
+
+				linha = buffer.readLine();
+
+			}
+
+			buffer.close();
+			isr.close();
+			fis.close();
+
+		}
+
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		String cmd = e.getActionCommand();
-		
+
 		if (cmd.equals("Salvar")) {
-			
+
 			try {
-				
+
 				salvar();
-				
+
 			} catch (IOException e1) {
-				
+
 				e1.printStackTrace();
-				
+
 			}
-			
+
 		}
-		
+
 		if (cmd.equals("Buscar")) {
-			
+
 			buscar();
-			
+
 		}
-		
-		if(cmd.equals("Remover")){
-			
+
+		if (cmd.equals("Remover")) {
+
 			remover();
-			
+
 		}
 
 	}
-
-	
 
 	private void buscar() {
 
-	    taCurso.setText("");
+		taCurso.setText("");
 
-	    try {
+		try {
 
-	        // Busca por codigo
-	    	
-	        if (!tfCursoCodigo.getText().isBlank()) {
+			// Busca por codigo
 
-	            int codigo = Integer.parseInt(tfCursoCodigo.getText());
+			if (!tfCursoCodigo.getText().isBlank()) {
 
-	            for (int i = 0; i < listaCursos.size(); i++) {
+				int codigo = Integer.parseInt(tfCursoCodigo.getText());
 
-	                Curso curso = listaCursos.get(i);
+				for (int i = 0; i < listaCursos.size(); i++) {
 
-	                if (curso.codigo == codigo) {
+					Curso curso = listaCursos.get(i);
 
-	                    taCurso.setText(curso.toString());
-	                    
-	                    return;
-	                }
-	            }
+					if (curso.codigo == codigo) {
 
-	            taCurso.setText("Curso não encontrado.");
-	        }
+						taCurso.setText(curso.toString());
 
-	        // Busca por nome
-	        
-	        else if (!tfCursoNome.getText().isBlank()) {
+						return;
+					}
+				}
 
-	            String nome = tfCursoNome.getText();
+				taCurso.setText("Curso não encontrado.");
+			}
 
-	            for (int i = 0; i < listaCursos.size(); i++) {
+			// Busca por nome
 
-	                Curso curso = listaCursos.get(i);
+			else if (!tfCursoNome.getText().isBlank()) {
 
-	                if (curso.nome.equalsIgnoreCase(nome)) {
+				String nome = tfCursoNome.getText();
 
-	                    taCurso.setText(curso.toString());
-	                    
-	                    return;
-	                    
-	                }
-	                
-	            }
+				for (int i = 0; i < listaCursos.size(); i++) {
 
-	            taCurso.setText("Curso não encontrado.");
-	        }
+					Curso curso = listaCursos.get(i);
 
-	        // Busca por area
-	        
-	        else if (!tfCursoArea.getText().isBlank()) {
+					if (curso.nome.equalsIgnoreCase(nome)) {
 
-	            String area = tfCursoArea.getText();
+						taCurso.setText(curso.toString());
 
-	            StringBuilder resultado = new StringBuilder();
+						return;
 
-	            for (int i = 0; i < listaCursos.size(); i++) {
+					}
 
-	                Curso curso = listaCursos.get(i);
+				}
 
-	                if (curso.area.equalsIgnoreCase(area)) {
+				taCurso.setText("Curso não encontrado.");
+			}
 
-	                    resultado.append(curso.toString()).append("\n");
-	                    
-	                }
-	                
-	            }
+			// Busca por area
 
-	            if (resultado.length() > 0) {
-	            	
-	                taCurso.setText(resultado.toString());
-	                
-	            } else {
-	            	
-	                taCurso.setText("Nenhum curso encontrado para esta área.");
-	                
-	            }
-	            
-	        }
+			else if (!tfCursoArea.getText().isBlank()) {
 
-	    } catch (Exception e) {
-	    	
-	        e.printStackTrace();
-	        
-	    }
-	    
+				String area = tfCursoArea.getText();
+
+				StringBuilder resultado = new StringBuilder();
+
+				for (int i = 0; i < listaCursos.size(); i++) {
+
+					Curso curso = listaCursos.get(i);
+
+					if (curso.area.equalsIgnoreCase(area)) {
+
+						resultado.append(curso.toString()).append("\n");
+
+					}
+
+				}
+
+				if (resultado.length() > 0) {
+
+					taCurso.setText(resultado.toString());
+
+				} else {
+
+					taCurso.setText("Nenhum curso encontrado para esta área.");
+
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
 	}
-
-
 
 	private void salvar() throws IOException {
 
-	    Curso curso = new Curso();
+		Curso curso = new Curso();
 
-	    curso.codigo = Integer.parseInt(tfCursoCodigo.getText());
-	    
-	    curso.nome = tfCursoNome.getText();
-	    
-	    curso.area = tfCursoArea.getText();
+		curso.codigo = Integer.parseInt(tfCursoCodigo.getText());
 
-	    try {
-	    	
-	        listaCursos.addLast(curso);
-	        
-	    } catch (Exception e) {
-	    	
-	        e.printStackTrace();
-	    }
+		curso.nome = tfCursoNome.getText();
 
-	    taCurso.append(curso.toString() + "\n");
+		curso.area = tfCursoArea.getText();
 
-	    cadastraCurso(curso.toString());
+		try {
 
-	    tfCursoCodigo.setText("");
-	    
-	    tfCursoNome.setText("");
-	    
-	    tfCursoArea.setText("");
+			listaCursos.addLast(curso);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		taCurso.append(curso.toString() + "\n");
+
+		cadastraCurso(curso.toString());
+
+		tfCursoCodigo.setText("");
+
+		tfCursoNome.setText("");
+
+		tfCursoArea.setText("");
 	}
 
 	private void cadastraCurso(String csvCurso) throws IOException {
-		
+
 		String path = System.getProperty("user.home") + File.separator + "SistemaCadastro";
-		
+
 		File dir = new File(path);
-		
+
 		if (!dir.exists()) {
-			
+
 			dir.mkdir();
-			
+
 		}
 		File arq = new File(path, "Cursos.csv");
-		
+
 		boolean existe = false;
-		
+
 		if (arq.exists()) {
-			
+
 			existe = true;
-			
+
 		}
 		FileWriter fw = new FileWriter(arq, existe);
-		
-		PrintWriter pw = new PrintWriter(fw);
-		
-		pw.write(csvCurso + "\r\n");
-		
-		pw.flush();
-		
-		pw.close();
-		
-		fw.close();
-		
-	}
-	
 
+		PrintWriter pw = new PrintWriter(fw);
+
+		pw.write(csvCurso + "\r\n");
+
+		pw.flush();
+
+		pw.close();
+
+		fw.close();
+
+	}
 
 	private void remover() {
 
-	    try {
+		try {
 
-	        int codigo = Integer.parseInt(tfCursoCodigo.getText());
+			int codigo = Integer.parseInt(tfCursoCodigo.getText());
 
-	        int posicao = -1;
+			int posicao = -1;
 
-	        for (int i = 0; i < listaCursos.size(); i++) {
+			for (int i = 0; i < listaCursos.size(); i++) {
 
-	            Curso curso = listaCursos.get(i);
+				Curso curso = listaCursos.get(i);
 
-	            if (curso.codigo == codigo) {
-	            	
-	                posicao = i;
-	                
-	                break;
-	            }
-	            
-	        }
+				if (curso.codigo == codigo) {
 
-	        if (posicao == -1) {
+					posicao = i;
 
-	            taCurso.setText("Curso não encontrado.");
-	            
-	            return;
-	            
-	        }
+					break;
+				}
 
-	        listaCursos.remove(posicao);
+			}
 
-	        arqatualiza();
+			if (posicao == -1) {
 
-	        taCurso.setText("Curso removido com sucesso.");
+				taCurso.setText("Curso não encontrado.");
 
-	        tfCursoCodigo.setText("");
-	        
-	        tfCursoNome.setText("");
-	        
-	        tfCursoArea.setText("");
+				return;
 
-	    } catch (Exception e) {
+			}
 
-	        e.printStackTrace();
-	    }
-	    
+			listaCursos.remove(posicao);
+
+			arqatualiza();
+
+			taCurso.setText("Curso removido com sucesso.");
+
+			tfCursoCodigo.setText("");
+
+			tfCursoNome.setText("");
+
+			tfCursoArea.setText("");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	private void arqatualiza() throws Exception {
 
-	    String path = System.getProperty("user.home") + File.separator + "SistemaCadastro";
+		String path = System.getProperty("user.home") + File.separator + "SistemaCadastro";
 
-	    File arq = new File(path, "Cursos.csv");
+		File arq = new File(path, "Cursos.csv");
 
-	    FileWriter fw = new FileWriter(arq, false);
+		FileWriter fw = new FileWriter(arq, false);
 
-	    PrintWriter pw = new PrintWriter(fw);
+		PrintWriter pw = new PrintWriter(fw);
 
-	    for (int i = 0; i < listaCursos.size(); i++) {
+		for (int i = 0; i < listaCursos.size(); i++) {
 
-	        Curso curso = listaCursos.get(i);
+			Curso curso = listaCursos.get(i);
 
-	        pw.println(curso.toString());
-	    }
+			pw.println(curso.toString());
+		}
 
-	    pw.flush();
-	    
-	    pw.close();
-	    
-	    fw.close();
-	    
+		pw.flush();
+
+		pw.close();
+
+		fw.close();
+
 	}
-	
+
+	public String[] buscarCodigos() {
+		String[] vetorCodigos = new String[listaCursos.size()];
+
+		try {
+			for (int i = 0; i < listaCursos.size(); i++) {
+				vetorCodigos[i] = Integer.toString(listaCursos.get(i).codigo);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
+		return vetorCodigos;
+		
+	}
+
 }

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.cursoController;
+import controller.DisciplinaController;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -165,7 +166,10 @@ public class Tela extends JFrame {
 		lblDisciplinaCodigoCurso.setBounds(360, 40, 160, 25);
 		tabDisciplina.add(lblDisciplinaCodigoCurso);
 		
-		JComboBox<String> cboxDisciplinaCodigo = new JComboBox<>();
+		
+		// Obtém os codigos dos cursos cadastrados
+		String[] vetorCodigos = cCurso.buscarCodigos();
+		JComboBox<String> cboxDisciplinaCodigo = new JComboBox<>(vetorCodigos);
 		cboxDisciplinaCodigo.setToolTipText("Selecione o Código do Curso desejado");
 		cboxDisciplinaCodigo.setSelectedIndex(-1);
 		cboxDisciplinaCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -247,6 +251,11 @@ public class Tela extends JFrame {
 		
 		JTextArea taDisciplina = new JTextArea();
 		scrollPaneDisciplina.setViewportView(taDisciplina);
+		
+		DisciplinaController dCont = new DisciplinaController(tfDisciplinaCodigo, tfDisciplinaNome, cboxDisciplinaDiaSemana, tfDisciplinaHoraInicio, tfDisciplinaQntHoras, cboxDisciplinaCodigo, taDisciplina);
+		btnDisciplinaSalvar.addActionListener(dCont);
+		btnDisciplinaBuscar.addActionListener(dCont);
+		btnDisciplinaRemover.addActionListener(dCont);
 				
 		//------------------------------------------ Tab Professor -------------------------------------------------------
 		
