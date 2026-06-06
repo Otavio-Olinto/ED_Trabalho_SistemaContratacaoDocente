@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JTextArea;
 import java.awt.SystemColor;
+import javax.swing.JScrollPane;
 
 public class Tela extends JFrame {
 
@@ -123,9 +124,12 @@ public class Tela extends JFrame {
 		btnCursoRemover.setBounds(469, 220, 90, 25);
 		tabCurso.add(btnCursoRemover);
 		
+		JScrollPane scrollPaneCurso = new JScrollPane();
+		scrollPaneCurso.setBounds(10, 256, 579, 164);
+		tabCurso.add(scrollPaneCurso);
+		
 		JTextArea taCurso = new JTextArea();
-		taCurso.setBounds(10, 256, 579, 164);
-		tabCurso.add(taCurso);
+		scrollPaneCurso.setViewportView(taCurso);
 		
 		//------------------------------------------ Tab Disciplina -------------------------------------------------------
 		
@@ -227,9 +231,12 @@ public class Tela extends JFrame {
 		btnDisciplinaRemover.setBounds(469, 220, 90, 25);
 		tabDisciplina.add(btnDisciplinaRemover);
 		
+		JScrollPane scrollPaneDisciplina = new JScrollPane();
+		scrollPaneDisciplina.setBounds(10, 256, 579, 164);
+		tabDisciplina.add(scrollPaneDisciplina);
+		
 		JTextArea taDisciplina = new JTextArea();
-		taDisciplina.setBounds(10, 256, 579, 164);
-		tabDisciplina.add(taDisciplina);
+		scrollPaneDisciplina.setViewportView(taDisciplina);
 				
 		//------------------------------------------ Tab Professor -------------------------------------------------------
 		
@@ -307,9 +314,12 @@ public class Tela extends JFrame {
 		btnProfessorRemover.setBounds(469, 220, 90, 25);
 		tabProfessor.add(btnProfessorRemover);
 		
+		JScrollPane scrollPaneProfessor = new JScrollPane();
+		scrollPaneProfessor.setBounds(10, 256, 579, 164);
+		tabProfessor.add(scrollPaneProfessor);
+		
 		JTextArea taProfessor = new JTextArea();
-		taProfessor.setBounds(10, 256, 579, 164);
-		tabProfessor.add(taProfessor);
+		scrollPaneProfessor.setViewportView(taProfessor);
 		
 		//------------------------------------------ Tab Processo --------------------------------------------------------
 		
@@ -368,9 +378,12 @@ public class Tela extends JFrame {
 		btnProcessoBuscar.setBounds(404, 160, 90, 25);
 		tabProcesso.add(btnProcessoBuscar);
 		
+		JScrollPane scrollPaneProcesso = new JScrollPane();
+		scrollPaneProcesso.setBounds(10, 196, 579, 224);
+		tabProcesso.add(scrollPaneProcesso);
+		
 		JTextArea taProcesso = new JTextArea();
-		taProcesso.setBounds(10, 196, 579, 224);
-		tabProcesso.add(taProcesso);
+		scrollPaneProcesso.setViewportView(taProcesso);
 		
 		//------------------------------------------ Tab Inscrições ------------------------------------------------------
 		
@@ -435,9 +448,12 @@ public class Tela extends JFrame {
 		btnIncriçõesRemover.setBounds(469, 220, 90, 25);
 		tabInscrições.add(btnIncriçõesRemover);
 		
+		JScrollPane scrollPaneInscrições = new JScrollPane();
+		scrollPaneInscrições.setBounds(10, 256, 579, 164);
+		tabInscrições.add(scrollPaneInscrições);
+		
 		JTextArea taInscrições = new JTextArea();
-		taInscrições.setBounds(10, 256, 579, 164);
-		tabInscrições.add(taInscrições);
+		scrollPaneInscrições.setViewportView(taInscrições);
 		
 		//------------------------------------------ Tab Consulta --------------------------------------------------------
 		
@@ -477,8 +493,11 @@ public class Tela extends JFrame {
 		btnConsultaBuscarProcessos.setBounds(469, 100, 90, 25);                 
 		tabConsulta.add(btnConsultaBuscarProcessos);  
 		
+		JScrollPane scrollPaneConsulta = new JScrollPane();
+		scrollPaneConsulta.setBounds(10, 136, 579, 284);
+		tabConsulta.add(scrollPaneConsulta);
+		
 		JTextArea taConsulta = new JTextArea();
-		taConsulta.setBounds(10, 136, 579, 284);
-		tabConsulta.add(taConsulta);
+		scrollPaneConsulta.setViewportView(taConsulta);
 	}   
 }          
