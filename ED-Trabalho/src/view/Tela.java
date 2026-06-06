@@ -1,10 +1,13 @@
 package view;
 
-import java.awt.EventQueue;
+import java.awt.EventQueue; 
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.cursoController;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -130,6 +133,13 @@ public class Tela extends JFrame {
 		
 		JTextArea taCurso = new JTextArea();
 		scrollPaneCurso.setViewportView(taCurso);
+		
+		
+		
+		cursoController cCurso = new cursoController(tfCursoCodigo,tfCursoNome,tfCursoArea,taCurso);
+		btnCursoSalvar.addActionListener(cCurso);
+		btnCursoBuscar.addActionListener(cCurso);
+		btnCursoRemover.addActionListener(cCurso);
 		
 		//------------------------------------------ Tab Disciplina -------------------------------------------------------
 		
