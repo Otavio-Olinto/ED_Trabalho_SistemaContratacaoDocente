@@ -171,7 +171,6 @@ public class ProcessoController implements ActionListener {
 				
 				Processo processoExistente = listaProcessos.get(posicaoNaLista);
 				processoExistente.setStatus(status);
-				processoExistente.setCodigoDisciplina(codDisciplina);
 				arqAtualiza();
 				taProcesso.setText("Processo ATUALIZADO com sucesso:\n" + processoExistente.toString());
 			} else {
