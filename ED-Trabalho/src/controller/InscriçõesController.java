@@ -82,7 +82,7 @@ public class InscriçõesController implements ActionListener {
 	private void buscar() {
 		
 		
-		taInscrição.setText("Pamonha");
+		taInscrição.setText("");
 
 		int tamanho = listaInscritos.size();
 		

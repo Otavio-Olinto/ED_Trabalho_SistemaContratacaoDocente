@@ -266,7 +266,7 @@ public class ConsultaController implements ActionListener {
 		String codigoDisciplina = vetCodigoDisciplina[0].trim();
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("Professores inscritos no processo da sisciplina:\n"+cboxDisciplina+"\nCPF - Nome - Área - Pontos\n\n");
+		buffer.append("Professores inscritos no processo da disciplina:\n"+cboxDisciplina+"\nCPF - Nome - Área - Pontos\n\n");
 		
 		int tamanhoInscritos = listaInscritos.size();
 		int tamanhoProfessores = listaProfessores.size();
