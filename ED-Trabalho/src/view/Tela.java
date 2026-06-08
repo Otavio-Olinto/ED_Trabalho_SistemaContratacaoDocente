@@ -8,12 +8,17 @@ import javax.swing.border.EmptyBorder;
 
 import controller.cursoController;
 import controller.DisciplinaController;
+import controller.ProfessorController;
+import controller.ProcessoController;
+import controller.InscriçõesController;
+import controller.ConsultaController;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JTextArea;
@@ -35,6 +40,13 @@ public class Tela extends JFrame {
 	private JTextField tfProfessorNome;
 	private JTextField tfProfessorQntPontos;
 	private JTextField tfProcessoCodigo;
+	private JComboBox<String> cboxProfessorArea;
+	private JComboBox<String> cboxDisciplinaCodigoCurso;
+	private JComboBox<String> cboxProcessoDisciplina;
+	private JComboBox<String> cboxIncriçõesCodigoProcesso;
+	private JComboBox<String> cboxIncriçõesCodigoDisciplina;
+	private JComboBox<String> cboxIncriçõesCpf;
+	JComboBox<String> cboxConsultaInscritos;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -136,8 +148,7 @@ public class Tela extends JFrame {
 		scrollPaneCurso.setViewportView(taCurso);
 		
 		
-		
-		cursoController cCurso = new cursoController(tfCursoCodigo,tfCursoNome,tfCursoArea,taCurso);
+		cursoController cCurso = new cursoController(tfCursoCodigo,tfCursoNome,tfCursoArea,taCurso, this);
 		btnCursoSalvar.addActionListener(cCurso);
 		btnCursoBuscar.addActionListener(cCurso);
 		btnCursoRemover.addActionListener(cCurso);
@@ -169,12 +180,12 @@ public class Tela extends JFrame {
 		
 		// Obtém os codigos dos cursos cadastrados
 		String[] vetorCodigos = cCurso.buscarCodigos();
-		JComboBox<String> cboxDisciplinaCodigo = new JComboBox<>(vetorCodigos);
-		cboxDisciplinaCodigo.setToolTipText("Selecione o Código do Curso desejado");
-		cboxDisciplinaCodigo.setSelectedIndex(-1);
-		cboxDisciplinaCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		cboxDisciplinaCodigo.setBounds(500, 40, 90, 25);
-		tabDisciplina.add(cboxDisciplinaCodigo);
+		cboxDisciplinaCodigoCurso = new JComboBox<>(vetorCodigos);
+		cboxDisciplinaCodigoCurso.setToolTipText("Selecione o Código do Curso desejado");
+		cboxDisciplinaCodigoCurso.setSelectedIndex(-1);
+		cboxDisciplinaCodigoCurso.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxDisciplinaCodigoCurso.setBounds(500, 40, 90, 25);
+		tabDisciplina.add(cboxDisciplinaCodigoCurso);
 		
 		JLabel lblDisciplinaNome = new JLabel("Nome:");
 		lblDisciplinaNome.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -252,7 +263,7 @@ public class Tela extends JFrame {
 		JTextArea taDisciplina = new JTextArea();
 		scrollPaneDisciplina.setViewportView(taDisciplina);
 		
-		DisciplinaController dCont = new DisciplinaController(tfDisciplinaCodigo, tfDisciplinaNome, cboxDisciplinaDiaSemana, tfDisciplinaHoraInicio, tfDisciplinaQntHoras, cboxDisciplinaCodigo, taDisciplina);
+		DisciplinaController dCont = new DisciplinaController(tfDisciplinaCodigo, tfDisciplinaNome, cboxDisciplinaDiaSemana, tfDisciplinaHoraInicio, tfDisciplinaQntHoras, cboxDisciplinaCodigoCurso, taDisciplina, this);
 		btnDisciplinaSalvar.addActionListener(dCont);
 		btnDisciplinaBuscar.addActionListener(dCont);
 		btnDisciplinaRemover.addActionListener(dCont);
@@ -292,7 +303,8 @@ public class Tela extends JFrame {
 		lblProfessorArea.setBounds(40, 160, 160, 25);
 		tabProfessor.add(lblProfessorArea);
 		
-		JComboBox<String> cboxProfessorArea = new JComboBox<>(dias);
+		String[] vetorAreas = cCurso.buscarAreas();
+		cboxProfessorArea = new JComboBox<>(vetorAreas);
 		cboxProfessorArea.setToolTipText("O Docente só pode ser cadastrado se sua área for compatível com algum curso da unidade");
 		cboxProfessorArea.setSelectedIndex(-1);
 		cboxProfessorArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -340,6 +352,18 @@ public class Tela extends JFrame {
 		JTextArea taProfessor = new JTextArea();
 		scrollPaneProfessor.setViewportView(taProfessor);
 		
+		ProfessorController cProfessor =
+		        new ProfessorController(
+		                tfProfessorCpf,
+		                tfProfessorNome,
+		                tfProfessorQntPontos,
+		                cboxProfessorArea,
+		                taProfessor, this);
+
+		btnProfessorSalvar.addActionListener(cProfessor);
+		btnProfessorBuscar.addActionListener(cProfessor);
+		btnProfessorRemover.addActionListener(cProfessor);
+		
 		//------------------------------------------ Tab Processo --------------------------------------------------------
 		
 		JPanel tabProcesso = new JPanel();
@@ -376,12 +400,13 @@ public class Tela extends JFrame {
 		lblProcessoDisciplina.setBounds(40, 100, 90, 25);
 		tabProcesso.add(lblProcessoDisciplina);
 		
-		JComboBox<String> cboxDisciplina = new JComboBox<>(status);
-		cboxDisciplina.setToolTipText("Selecione as Disciplinas que irão fazer parte do processo");
-		cboxDisciplina.setSelectedIndex(-1);
-		cboxDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		cboxDisciplina.setBounds(140, 100, 450, 25);
-		tabProcesso.add(cboxDisciplina);
+		String[] vetorNomes = dCont.buscarDisciplinas();
+		cboxProcessoDisciplina = new JComboBox<>(vetorNomes);
+		cboxProcessoDisciplina.setToolTipText("Selecione as Disciplinas que irão fazer parte do processo");
+		cboxProcessoDisciplina.setSelectedIndex(-1);
+		cboxProcessoDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cboxProcessoDisciplina.setBounds(140, 100, 450, 25);
+		tabProcesso.add(cboxProcessoDisciplina);
 		
 		JButton btnProcessoSalvar = new JButton("Salvar");
 		btnProcessoSalvar.setToolTipText("Adicionar ou Alterar os dados de um Processo");
@@ -404,6 +429,12 @@ public class Tela extends JFrame {
 		JTextArea taProcesso = new JTextArea();
 		scrollPaneProcesso.setViewportView(taProcesso);
 		
+		
+		ProcessoController pCont = new ProcessoController(tfProcessoCodigo, cboxProcessoStatus,
+				cboxProcessoDisciplina, taProcesso, this);
+		btnProcessoSalvar.addActionListener(pCont);
+		btnProcessoBuscar.addActionListener(pCont);
+		
 		//------------------------------------------ Tab Inscrições ------------------------------------------------------
 		
 		JPanel tabInscrições = new JPanel();
@@ -415,7 +446,8 @@ public class Tela extends JFrame {
 		lblIncriçõesCpf.setBounds(40, 40, 160, 25);
 		tabInscrições.add(lblIncriçõesCpf);
 		
-		JComboBox<String> cboxIncriçõesCpf = new JComboBox<>(dias);
+		String[] cpf = cProfessor.buscarCpf();
+		cboxIncriçõesCpf = new JComboBox<>(cpf);
 		cboxIncriçõesCpf.setToolTipText("Selecione o CPF do Docente");
 		cboxIncriçõesCpf.setSelectedIndex(-1);
 		cboxIncriçõesCpf.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -427,11 +459,12 @@ public class Tela extends JFrame {
 		lblInscriçõesProcesso.setBounds(40, 100, 160, 25);
 		tabInscrições.add(lblInscriçõesProcesso);
 		
-		JComboBox<String> cboxIncriçõesCodigoProcesso = new JComboBox<>(dias);
+		String[] processosAbertos = pCont.buscarProcessosAbertos();
+		cboxIncriçõesCodigoProcesso = new JComboBox<>(processosAbertos);
 		cboxIncriçõesCodigoProcesso.setToolTipText("Selecione o Código do Processo Aberto");
 		cboxIncriçõesCodigoProcesso.setSelectedIndex(-1);
 		cboxIncriçõesCodigoProcesso.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		cboxIncriçõesCodigoProcesso.setBounds(210, 100, 250, 25);
+		cboxIncriçõesCodigoProcesso.setBounds(210, 100, 350, 25);
 		tabInscrições.add(cboxIncriçõesCodigoProcesso);
 		
 		JLabel lblIncriçõesCodigo = new JLabel("Código da Disciplina:");
@@ -439,11 +472,12 @@ public class Tela extends JFrame {
 		lblIncriçõesCodigo.setBounds(40, 160, 160, 25);
 		tabInscrições.add(lblIncriçõesCodigo);
 		
-		JComboBox<String> cboxIncriçõesCodigoDisciplina = new JComboBox<>(dias);
+		String[] disciplinasAbertas = pCont.buscarDisciplinasAbertos();
+		cboxIncriçõesCodigoDisciplina = new JComboBox<>(disciplinasAbertas);
 		cboxIncriçõesCodigoDisciplina.setToolTipText("Selecione o Código da Disciplina");
 		cboxIncriçõesCodigoDisciplina.setSelectedIndex(-1);
 		cboxIncriçõesCodigoDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		cboxIncriçõesCodigoDisciplina.setBounds(210, 160, 250, 25);
+		cboxIncriçõesCodigoDisciplina.setBounds(210, 160, 350, 25);
 		tabInscrições.add(cboxIncriçõesCodigoDisciplina);
 		
 		JButton btnIncriçõesSalvar = new JButton("Salvar");
@@ -474,6 +508,12 @@ public class Tela extends JFrame {
 		JTextArea taInscrições = new JTextArea();
 		scrollPaneInscrições.setViewportView(taInscrições);
 		
+		InscriçõesController cInscrição = new InscriçõesController(cboxIncriçõesCpf,cboxIncriçõesCodigoProcesso,
+				cboxIncriçõesCodigoDisciplina, taInscrições);
+		btnIncriçõesSalvar.addActionListener (cInscrição);
+		btnIncriçõesBuscar.addActionListener (cInscrição);
+		btnIncriçõesRemover.addActionListener(cInscrição);
+		
 		//------------------------------------------ Tab Consulta --------------------------------------------------------
 		
 		JPanel tabConsulta = new JPanel();
@@ -485,7 +525,7 @@ public class Tela extends JFrame {
 		lblConsultaInscritos.setBounds(40, 40, 166, 25);
 		tabConsulta.add(lblConsultaInscritos);
 
-		JComboBox<String> cboxConsultaInscritos = new JComboBox<>(dias);
+		cboxConsultaInscritos = new JComboBox<>(disciplinasAbertas);
 		cboxConsultaInscritos.setToolTipText("Selecione a Disciplina que deseja Consultar");
 		cboxConsultaInscritos.setSelectedIndex(-1);
 		cboxConsultaInscritos.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -518,5 +558,115 @@ public class Tela extends JFrame {
 		
 		JTextArea taConsulta = new JTextArea();
 		scrollPaneConsulta.setViewportView(taConsulta);
-	}   
+		
+		ConsultaController cConsulta = new ConsultaController(cboxConsultaInscritos, btnConsultaBuscarInscritos, btnConsultaBuscarProcessos, taConsulta);
+		btnConsultaBuscarInscritos.addActionListener (cConsulta);
+		btnConsultaBuscarProcessos.addActionListener(cConsulta);
+	} 
+	
+	public void adicionarCodigoCurso(String novoCodigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxDisciplinaCodigoCurso.getModel();
+		model.addElement(novoCodigo);
+		
+		cboxDisciplinaCodigoCurso.setSelectedIndex(-1);
+	}
+	
+	public void removerCodigoCurso(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxDisciplinaCodigoCurso.getModel();
+		model.removeElement(codigo);
+		
+		cboxDisciplinaCodigoCurso.setSelectedIndex(-1);
+	}
+	
+	public void adicionarArea(String novaArea) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxProfessorArea.getModel();
+		model.addElement(novaArea);
+		
+		cboxProfessorArea.setSelectedIndex(-1);
+	}
+	
+	public void removerArea(String area) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxProfessorArea.getModel();
+		model.removeElement(area);
+
+		cboxProfessorArea.setSelectedIndex(-1);
+	}
+	
+	public void adicionarDisciplinaProcesso(String novaDisciplina) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxProcessoDisciplina.getModel();
+		model.addElement(novaDisciplina);
+		
+		cboxProcessoDisciplina.setSelectedIndex(-1);
+	}
+	
+	public void removerDisciplinaProcesso(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxProcessoDisciplina.getModel();
+		model.removeElement(codigo);
+		
+		cboxProcessoDisciplina.setSelectedIndex(-1);
+	}
+	
+	public void adicionarInscriçãoProcesso(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCodigoProcesso.getModel();
+		model.addElement(codigo);
+		
+		cboxIncriçõesCodigoProcesso.setSelectedIndex(-1);
+	}
+	
+	public void removerInscriçãoProcesso(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCodigoProcesso.getModel();
+		model.removeElement(codigo);
+		
+		cboxIncriçõesCodigoProcesso.setSelectedIndex(-1);
+	}
+	
+	public void adicionarInscriçãoConsultaDisciplina(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCodigoDisciplina.getModel();
+		model.addElement(codigo);
+
+		DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) cboxConsultaInscritos.getModel();
+		model2.addElement(codigo);
+		
+		cboxConsultaInscritos.setSelectedIndex(-1);
+		cboxIncriçõesCodigoDisciplina.setSelectedIndex(-1);
+		
+	}
+	
+	public void removerInscriçãoConsultaDisciplina(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCodigoDisciplina.getModel();
+		model.removeElement(codigo);
+		
+		DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) cboxConsultaInscritos.getModel();
+		model2.removeElement(codigo);
+		
+		cboxConsultaInscritos.setSelectedIndex(-1);
+		cboxIncriçõesCodigoDisciplina.setSelectedIndex(-1);
+	}
+	
+	public void adicionarInscriçãoCpf(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCpf.getModel();
+		model.addElement(codigo);
+		
+		cboxIncriçõesCpf.setSelectedIndex(-1);
+		
+	}
+	
+	public void removerInscriçãoCpf(String codigo) {
+		
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cboxIncriçõesCpf.getModel();
+		model.removeElement(codigo);
+		
+		cboxIncriçõesCpf.setSelectedIndex(-1);
+	}
 }          

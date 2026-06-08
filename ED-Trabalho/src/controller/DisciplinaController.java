@@ -6,8 +6,10 @@ import java.io.*;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
 import model.Disciplina;
 import otavioolinto.Lista;
+import view.Tela;
 
 public class DisciplinaController implements ActionListener {
 
@@ -22,10 +24,12 @@ public class DisciplinaController implements ActionListener {
 	private JTextField tfDisciplinaQntHoras;
 	private JComboBox<String> cboxDisciplinaCodigo;
 	private JTextArea taDisciplina;
+	private Tela tela;
 
 	public DisciplinaController(JTextField tfDisciplinaCodigo, JTextField tfDisciplinaNome,
 			JComboBox<String> cboxDisciplinaDiaSemana, JTextField tfDisciplinaHoraInicio,
-			JTextField tfDisciplinaQntHoras, JComboBox<String> cboxDisciplinaCodigo, JTextArea taDisciplina) {
+			JTextField tfDisciplinaQntHoras, JComboBox<String> cboxDisciplinaCodigo, JTextArea taDisciplina, Tela tela) {
+		
 		this.tfDisciplinaCodigo = tfDisciplinaCodigo;
 		this.tfDisciplinaNome = tfDisciplinaNome;
 		this.cboxDisciplinaDiaSemana = cboxDisciplinaDiaSemana;
@@ -33,6 +37,7 @@ public class DisciplinaController implements ActionListener {
 		this.tfDisciplinaQntHoras = tfDisciplinaQntHoras;
 		this.cboxDisciplinaCodigo = cboxDisciplinaCodigo;
 		this.taDisciplina = taDisciplina;
+		this.tela = tela;
 
 		// Carrega os dados
 		try {
@@ -142,13 +147,19 @@ public class DisciplinaController implements ActionListener {
 		disciplina.setHoraInicio(tfDisciplinaHoraInicio.getText());
 		disciplina.setQtdHoras(Integer.parseInt(tfDisciplinaQntHoras.getText()));
 		disciplina.setCodigoCurso(Integer.parseInt(cboxDisciplinaCodigo.getSelectedItem().toString()));
-
+		
+		if(qntDisciplinasIguais(disciplina)==0) {
+			
+			String nome = disciplina.getCodigoDisciplina()+" - "+disciplina.getNome()+" - "+disciplina.getHoraInicio()+" - "+disciplina.getDiaSemana();
+			tela.adicionarDisciplinaProcesso(nome);
+		}
+		
 		try {
 			listaDisciplinas.addLast(disciplina);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-
+		
 		taDisciplina.setText(disciplina.toString());
 		cadastrarDisciplina(disciplina);
 
@@ -216,10 +227,17 @@ public class DisciplinaController implements ActionListener {
 
 			}
 			
+			Disciplina disciplina;
+
 			if (posicao == -1) {
 				taDisciplina.setText("Disciplina não encontrada");
 				return;
+			}else {
+				disciplina = listaDisciplinas.get(posicao);
 			}
+			
+			String nome = disciplina.getNome()+" - "+disciplina.getHoraInicio()+" - "+disciplina.getDiaSemana();
+			tela.removerDisciplinaProcesso(nome);
 
 			listaDisciplinas.remove(posicao);
 
@@ -270,5 +288,72 @@ public class DisciplinaController implements ActionListener {
 		}
 
 		return vetorCodigos;	
+	}
+	
+	public String[] buscarDisciplinas() {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		int tamanho = listaDisciplinas.size();
+		
+		String[] vetorNomes;
+		
+		String nome = "";
+		
+		Disciplina disciplina;
+		
+		try {
+			for (int i = 0; i < tamanho; i++) {
+				
+				disciplina = listaDisciplinas.get(i);
+				
+				for(int j = 0; j<=i; j++) {
+					
+					if(i==j) {
+						
+						buffer.append(disciplina.getCodigoDisciplina()+" - "+disciplina.getNome()+" - "+disciplina.getHoraInicio()+" - "+disciplina.getDiaSemana());
+						buffer.append(";");
+					}
+					
+					if(disciplina.equals(listaDisciplinas.get(j))) {
+						break;
+					}
+				}
+			}
+			
+			 nome = buffer.toString();
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		vetorNomes = nome.split(";");
+		return vetorNomes;
+		
+	}
+	
+	private int qntDisciplinasIguais(Disciplina disciplina) {
+		
+		int qnt = 0;
+
+		int tamanho = listaDisciplinas.size();
+		
+		Disciplina daLista;
+		
+		for(int i=0; i<tamanho; i++) {
+			
+			try {
+				
+				daLista = listaDisciplinas.get(i);
+				
+				if(disciplina.equals(daLista)) qnt++;
+				
+			}catch (Exception exc) {
+				
+				System.err.println(exc.getMessage());
+			}
+			
+		}
+		return qnt;
 	}
 }

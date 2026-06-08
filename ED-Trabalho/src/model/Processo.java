@@ -3,15 +3,15 @@ package model;
 public class Processo {
 
 	public int codigoProcesso;
-	public int codigoDisciplina;
+	public String nomeDisciplina;
 	public String status;
 
 	public Processo() {
 	}
 
-	public Processo(int codigo, int codigoDisciplina, String status) {
+	public Processo(int codigo, String nomeDisciplina, String status) {
 		this.codigoProcesso = codigo;
-		this.codigoDisciplina = codigoDisciplina;
+		this.nomeDisciplina = nomeDisciplina;
 		this.status = status;
 	}
 
@@ -23,12 +23,12 @@ public class Processo {
 		this.codigoProcesso = codigo;
 	}
 
-	public int getCodigoDisciplina() {
-		return codigoDisciplina;
+	public String getNomeDisciplina() {
+		return nomeDisciplina;
 	}
 
-	public void setCodigoDisciplina(int codigoDisciplina) {
-		this.codigoDisciplina = codigoDisciplina;
+	public void setNomeDisciplina(String nomeDisciplina) {
+		this.nomeDisciplina = nomeDisciplina;
 	}
 
 	public String getStatus() {
@@ -41,7 +41,7 @@ public class Processo {
 
 	@Override
 	public String toString() {
-		return codigoProcesso + ";" + codigoDisciplina + ";" + status;
+		return codigoProcesso + ";" + nomeDisciplina + ";" + status;
 	}
 
 	@Override
@@ -55,7 +55,8 @@ public class Processo {
 		}
 		
 		Processo outro = (Processo) obj;
-		return this.codigoProcesso == outro.codigoProcesso;
+		return this.codigoProcesso == outro.codigoProcesso && 
+				this.nomeDisciplina.equals(outro.nomeDisciplina);
 
 	}
 }

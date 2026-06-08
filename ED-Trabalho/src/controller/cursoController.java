@@ -14,6 +14,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import otavioolinto.Lista;
 
+import view.Tela;
+
 public class cursoController implements ActionListener {
 
 	private Lista<Curso> listaCursos = new Lista<>(Curso.class);
@@ -22,16 +24,19 @@ public class cursoController implements ActionListener {
 	private JTextField tfCursoNome;
 	private JTextField tfCursoArea;
 	private JTextArea taCurso;
+	
+	private Tela tela;
 
 	public cursoController(JTextField tfCursoCodigo, JTextField tfCursoNome, JTextField tfCursoArea,
-			JTextArea taCurso) {
+			JTextArea taCurso, Tela tela) {
 
 		super();
-
+		
 		this.tfCursoCodigo = tfCursoCodigo;
 		this.tfCursoNome = tfCursoNome;
 		this.tfCursoArea = tfCursoArea;
 		this.taCurso = taCurso;
+		this.tela = tela;
 
 		try {
 
@@ -97,7 +102,7 @@ public class cursoController implements ActionListener {
 
 				salvar();
 
-			} catch (IOException e1) {
+			} catch (Exception e1) {
 
 				e1.printStackTrace();
 
@@ -209,7 +214,7 @@ public class cursoController implements ActionListener {
 
 	}
 
-	private void salvar() throws IOException {
+	private void salvar() throws Exception {
 
 		Curso curso = new Curso();
 
@@ -237,6 +242,11 @@ public class cursoController implements ActionListener {
 		tfCursoNome.setText("");
 
 		tfCursoArea.setText("");
+		
+		taCurso.setText("");
+		
+		tela.adicionarCodigoCurso(String.valueOf(curso.codigo));
+		if(qntAreaIguais(curso.area)==0) tela.adicionarArea(curso.area);
 	}
 
 	private void cadastraCurso(String csvCurso) throws IOException {
@@ -274,6 +284,8 @@ public class cursoController implements ActionListener {
 	}
 
 	private void remover() {
+		
+		taCurso.setText("");
 
 		try {
 
@@ -286,6 +298,9 @@ public class cursoController implements ActionListener {
 				Curso curso = listaCursos.get(i);
 
 				if (curso.codigo == codigo) {
+					
+					tela.removerCodigoCurso(String.valueOf(curso.codigo));
+					if(qntAreaIguais(curso.area)==1) tela.removerArea(curso.area);
 
 					posicao = i;
 
@@ -359,6 +374,71 @@ public class cursoController implements ActionListener {
 
 		return vetorCodigos;
 		
+	}
+	
+	public String[] buscarAreas() {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		int tamanho = listaCursos.size();
+		
+		String[] vetorAreas;
+		
+		String area = "";
+		
+		try {
+			for (int i = 0; i < tamanho; i++) {
+				area = listaCursos.get(i).area;
+				
+				for(int j = 0; j<=i; j++) {
+					
+					if(i==j) {
+						
+						buffer.append(area);
+						buffer.append(";");
+					}
+					
+					if(area.equals(listaCursos.get(j).area)) {
+						break;
+					}
+				}
+			}
+			
+			 area = buffer.toString();
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		vetorAreas = area.split(";");
+		return vetorAreas;
+		
+	}
+	
+	private int qntAreaIguais(String area) {
+		
+		int qnt = 0;
+
+		int tamanho = listaCursos.size();
+		
+		Curso curso;
+		
+		for(int i=0; i<tamanho; i++) {
+			
+			try {
+				
+				curso = listaCursos.get(i);
+				
+				if(curso.area.equals(area)) qnt++;
+				
+			}catch (Exception exc) {
+				
+				System.err.println(exc.getMessage());
+			}
+			
+		}
+		
+		return qnt;
 	}
 
 }
